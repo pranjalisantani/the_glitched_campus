@@ -188,7 +188,7 @@ export interface TeamStage2Progress {
   challengeStates: Record<string, TeamChallengeState>; // challengeId -> state
   hintsUsedCount: number;
   deductionMarks: number; // 2 per hint used
-  provisionalScore: number; // calculated max 10 minus deductions, clamp at 0
+  provisionalScore: number; // calculated max 50 minus deductions, clamp at 0
   scoreOverride?: number;
   evaluationNote?: string;
   overrideNote?: string;

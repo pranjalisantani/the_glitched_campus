@@ -75,7 +75,7 @@ export default function AdminPage() {
   const [newChPayload, setNewChPayload] = useState('');
   const [newChAnswer, setNewChAnswer] = useState('');
   const [newChHint, setNewChHint] = useState('');
-  const [newChPoints, setNewChPoints] = useState(10);
+  const [newChPoints, setNewChPoints] = useState(50);
 
   // Edit challenge state
   const [editingChallenge, setEditingChallenge] = useState<any | null>(null);
@@ -84,7 +84,7 @@ export default function AdminPage() {
   const [editChPayload, setEditChPayload] = useState('');
   const [editChAnswer, setEditChAnswer] = useState('');
   const [editChHint, setEditChHint] = useState('');
-  const [editChPoints, setEditChPoints] = useState(10);
+  const [editChPoints, setEditChPoints] = useState(50);
 
   // Score override modal
   const [overrideModal, setOverrideModal] = useState<{
@@ -905,7 +905,7 @@ export default function AdminPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-bold text-[#00ffa3] bg-black/40 px-3 py-1 rounded border border-[#00ffa3]/30">
-                      {p.provisionalScore} / 10 pts
+                      {p.provisionalScore} / 50 pts
                     </span>
                     <button
                       onClick={() => {
@@ -956,7 +956,7 @@ export default function AdminPage() {
                       setEditChPayload(ch.encodedPayload);
                       setEditChAnswer(ch.expectedAnswer);
                       setEditChHint(ch.hint);
-                      setEditChPoints(ch.points || 10);
+                      setEditChPoints(ch.points || 50);
                     }}
                     title="Edit Challenge"
                     className="px-2.5 py-1 rounded border border-[rgba(168,85,247,0.35)] text-[var(--violet-primary)] hover:bg-[rgba(168,85,247,0.12)] flex items-center gap-1 transition-colors"

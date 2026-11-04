@@ -627,7 +627,7 @@ router.post('/stage2/challenges', requirePermission('manage_stage2'), async (req
       expectedAnswer,
       hint,
       isActive: isActive !== undefined ? Boolean(isActive) : true,
-      points: Number(points) || 10,
+      points: Number(points) || 50,
       maxAttempts: Number(maxAttempts) || 3,
       hintDeduction: Number(hintDeduction) || 2,
       isDemonstration: false

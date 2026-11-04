@@ -12,9 +12,13 @@ The platform orchestrates competition progression across five sequential stages:
 
 1. **Stage 1: Security Assessment Quiz** — Multiple-choice assessment testing core security fundamentals. Features server-side answer verification, anti-cheat tab-focus tracking, clipboard auditing, and duplicate submission shielding.
 2. **Stage 2: Cryptographic Decode & Encode** — Cryptographic payload challenges (Base64, ROT13, Hex) featuring a strict 3-attempt limit per challenge, optional hints with a 2-mark deduction, and real-time evaluation feedback.
-3. **Stage 3: Forensic Dataset EDA** — Catalog of incident datasets (CSV/JSON) available for forensic exploration. Enforces a one-time team selection lock with authenticated downloads and directory traversal protections.
+3. **Stage 3: Forensic Dataset EDA** — Catalog of incident datasets (CSV/JSON) available for forensic exploration. Enforces a one-time team selection lock with strict participant download isolation (teams can only download their selected dataset) and directory traversal protections.
 4. **Stage 4: Static Defensive Prototype** — Architectural UI/UX problem statements for static defensive workflow prototyping, locked upon selection to ensure continuity.
 5. **Stage 5: Dynamic Security Application** — Full-stack implementation requirements that pull the assigned problem directly from the backend to guarantee strict continuity with Stage 4.
+
+### Visual Interface & Telemetry Matrix
+<!-- [PLACEHOLDER: Competition Dashboard & Live Stage Map Screenshot - public/screenshots/dashboard.png] -->
+<!-- [PLACEHOLDER: Administrative Control Center & Telemetry Matrix Screenshot - public/screenshots/admin.png] -->
 
 ---
 
@@ -41,8 +45,8 @@ The platform orchestrates competition progression across five sequential stages:
 |---|---|
 | **Frontend** | [Next.js](https://nextjs.org/) 16 (App Router with Turbopack), [React](https://react.dev/) 19, [TypeScript](https://www.typescriptlang.org/) 5, [Tailwind CSS](https://tailwindcss.com/) 4, [Lucide React](https://lucide.dev/) |
 | **Backend** | [Node.js](https://nodejs.org/) (v18+), [Express](https://expressjs.com/) 4, [TypeScript](https://www.typescriptlang.org/) 5, `tsx` (runtime/watcher), `bcryptjs`, `jsonwebtoken`, `cors` |
-| **Storage Engine** | Modular `IStore` interface with `PersistentFileStore` (atomic JSON file-backed persistence under `backend/storage/data`) and `MemoryStore` |
-| **Testing** | Node.js native test runner (`node --test` / `tsx --test`) with 41 automated integration and security tests |
+| **Storage Engine** | Modular `IStore` interface with `SupabaseStore` (PostgreSQL via Supabase), `PersistentFileStore` (atomic JSON persistence under `backend/storage/data`), and `MemoryStore` (ephemeral) |
+| **Testing** | Node.js native test runner (`node --test` / `tsx --test`) with 49 automated integration, security, and data integrity tests across 4 test suites |
 | **Orchestration** | `concurrently` for synchronized multi-service development |
 
 ---
@@ -53,10 +57,11 @@ The platform orchestrates competition progression across five sequential stages:
 the-glitched-campus/
 |-- frontend/                       # Next.js App Router client application
 |   |-- src/
-|   |   |-- app/                    # Routes: /, /login, /register, /dashboard, /stages, /admin
+|   |   |-- app/                    # Routes: /, /login, /register, /dashboard, /stages, /stage/1-5, /admin
 |   |   |   |-- admin/              # Admin dashboard, RBAC tabs, and test mode
 |   |   |   |-- dashboard/          # Participant dashboard and stage status matrix
-|   |   |   |-- stages/             # Stage 1 to 5 interactive challenges
+|   |   |   |-- stage/              # Stage 1 to 5 interactive challenge routes
+|   |   |   |-- stages/             # Live Stage Map overview route
 |   |   |   `-- globals.css         # Cyber-forensics design system
 |   |   |-- components/             # Reusable UI components (Navbar, StageMap, Panel, Modals)
 |   |   |-- context/                # AuthContext session state & user clearance
@@ -74,7 +79,8 @@ the-glitched-campus/
 |   |   |-- types/                  # Unified TypeScript interfaces and domain contracts
 |   |   `-- index.ts                # Express application bootstrap & route mounting
 |   |-- storage/                    # Persistent runtime data (JSON store)
-|   |-- data/datasets/              # Forensic sample datasets for Stage 3
+|   |-- data/datasets/              # Forensic sample & competition datasets for Stage 3
+|   |-- src/scripts/                # Utilities: admin password reset, dataset seeding
 |   `-- package.json
 |-- .env.example                    # Root example environment configuration
 |-- ARCHITECTURE.md                 # System architecture and data flow documentation
@@ -110,6 +116,13 @@ npm install --prefix backend
 npm install --prefix frontend
 ```
 
+### 6.2 Seed Competition Datasets (Stage 3)
+The repository includes 10 synthetic collegiate forensic datasets under `backend/data/datasets/` for Stage 3 Exploratory Data Analysis. To verify or regenerate these files:
+
+```bash
+npm run seed:datasets
+```
+
 ---
 
 ## 7. Environment Configuration
@@ -131,6 +144,10 @@ JWT_SECRET=your_cryptographically_secure_jwt_secret_min_32_chars
 # Initial Primary Administrator Bootstrap (Optional for local dev)
 ADMIN_EMAIL=your_admin_email@example.com
 ADMIN_PASSWORD=your_secure_admin_password
+
+# Optional: Supabase PostgreSQL Persistence
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_secret_key
 ```
 
 > **Security Note on Production Secret Enforcement**:
@@ -176,7 +193,7 @@ npm run dev:frontend
 
 ## 9. Verification & Testing
 
-The backend includes a comprehensive automated test suite verifying authentication boundaries, stage locks, quiz scoring integrity, attempt limits, data isolation, and RBAC policies:
+The backend includes a comprehensive automated test suite (49 automated tests across 4 suites: Admin Event Data Management, Admin Test Mode Security, Comprehensive & Security Suite, and SupabaseStore Unit Integrity) verifying authentication boundaries, stage locks, quiz scoring integrity, attempt limits, data isolation, and RBAC policies:
 
 ```bash
 # Run the automated backend test suite
@@ -189,7 +206,7 @@ To run linting and type checks across both tiers:
 # Run type checks and linters
 npm run lint
 
-# Build both applications for production validation
+# Build both applications for production validation (on Windows, see local build note below)
 npm run build
 ```
 
@@ -233,3 +250,4 @@ The application is deployed across modern cloud infrastructure:
 | **Administrator bootstrap skipped** | `ADMIN_EMAIL` or `ADMIN_PASSWORD` not supplied in environment. | Ensure both variables are defined in `backend/.env` if you want an initial admin account auto-created on startup. |
 | **Stage 403 Forbidden / Stage Locked** | The requested stage is currently set to `LOCKED` or `CLOSED`. | An administrator must unlock the stage from the Admin Stage Controls portal (`/admin`). |
 | **Competition Frozen modal displayed** | Global competition freeze has been engaged. | The primary administrator can disengage the freeze from the admin console. |
+| **Frontend build failure on Windows (Turbopack / EPERM)** | Turbopack IPC issue with Node 24 or stale directory handles in `.next`. | Clean `frontend/.next` and run `npx next build --webpack` in `frontend/`. |

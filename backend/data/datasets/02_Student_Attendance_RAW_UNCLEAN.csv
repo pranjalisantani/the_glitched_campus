@@ -1,0 +1,11 @@
+record_id,student_id,student_name,branch,semester,subject_code,subject_name,classes_held,classes_attended,attendance_percentage,status_flag,recorded_date
+ATT-101,STU-001,Aarav Sharma,Computer Science,6,CS601,Network Security,45,42,93.33,REGULAR,2026-10-15
+ATT-102,STU-002,Aditi Rao,Information Tech,6,IT602,Data Forensics,45,34,75.56,BORDERLINE,2026-10-15
+ATT-103,STU-003,Rohan Verma,Electronics,6,EC603,Embedded Systems,40,22,55.00,SHORTAGE,2026-10-15
+ATT-104,STU-004,Priya Nair,Computer Science,6,CS601,Network Security,45,45,100.0,EXEMPLARY,2026-10-15
+ATT-105,STU-005,Vikram Singh,Mechanical,6,ME604,Thermodynamics,42,30,71.43,BORDERLINE,2026-10-15
+ATT-106,STU-006,Kavita Iyer,Civil,6,CE605,Structural Design,38,18,47.37,CRITICAL_SHORTAGE,2026-10-15
+ATT-107,STU-007,Siddharth Das,Computer Science,6,CS601,Network Security,45,39,86.67,REGULAR,2026-10-15
+ATT-108,STU-008,Ananya Gupta,Information Tech,6,IT602,Data Forensics,45,41,91.11,REGULAR,2026-10-15
+ATT-109,STU-009,Karan Malhotra,Electronics,6,EC603,Embedded Systems,40,28,70.00,SHORTAGE,2026-10-15
+ATT-110,STU-010,Meera Joshi,Computer Science,6,CS601,Network Security,45,43,95.56,REGULAR,2026-10-15

@@ -1,0 +1,9 @@
+transaction_id,student_id,book_title,isbn,category,borrow_date,due_date,return_date,overdue_days,fine_amount_inr,status
+LIB-501,STU-001,Applied Cryptography 2nd Ed,978-0471117094,Cybersecurity,2026-09-01,2026-09-15,2026-09-14,0,0,RETURNED_ON_TIME
+LIB-502,STU-003,Digital Signal Processing,978-0131873742,Electronics,2026-09-05,2026-09-19,2026-09-28,9,90,OVERDUE_PAID
+LIB-503,STU-004,TCP/IP Illustrated Vol 1,978-0201633467,Networking,2026-09-10,2026-09-24,2026-09-22,0,0,RETURNED_ON_TIME
+LIB-504,STU-006,Fluid Mechanics Fundamentals,978-0073380322,Engineering,2026-09-12,2026-09-26,,15,150,CURRENTLY_OVERDUE
+LIB-505,STU-007,Machine Learning: A Probabilistic Perspective,978-0262018029,AI,2026-09-15,2026-09-29,2026-09-29,0,0,RETURNED_ON_TIME
+LIB-506,STU-002,Database System Concepts 7th Ed,978-0078022159,Databases,2026-09-18,2026-10-02,2026-10-05,3,30,OVERDUE_PAID
+LIB-507,STU-008,Modern Operating Systems 4th Ed,978-0133591620,Systems,2026-09-20,2026-10-04,2026-10-03,0,0,RETURNED_ON_TIME
+LIB-508,STU-010,Computer Organization & Design RISC-V,978-0128122754,Hardware,2026-09-22,2026-10-06,2026-10-06,0,0,RETURNED_ON_TIME

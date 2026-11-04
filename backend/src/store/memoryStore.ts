@@ -455,11 +455,11 @@ export class MemoryStore implements IStore {
     }
 
     progress.hintsUsedCount = hintsUsed;
-    progress.deductionMarks = hintsUsed * 2;
+    progress.deductionMarks = Math.min(50, hintsUsed * 2);
 
-    // Provisional base score: proportional up to 10 marks
-    const baseScore = totalActive > 0 ? (solvedCount / totalActive) * 10 : 0;
-    // Each hint deducts 2 marks from stage's 10, never below 0
+    // Provisional base score: proportional up to 50 marks
+    const baseScore = totalActive > 0 ? (solvedCount / totalActive) * 50 : 0;
+    // Each hint deducts 2 marks from stage's 50, never below 0
     progress.provisionalScore = Math.max(0, Math.round((baseScore - progress.deductionMarks) * 10) / 10);
   }
 
@@ -666,7 +666,7 @@ export class MemoryStore implements IStore {
         challengeStates: {},
         hintsUsedCount: 0,
         deductionMarks: 0,
-        provisionalScore: 10,
+        provisionalScore: 50,
         lastActivityAt: new Date().toISOString()
       };
     }

@@ -27,7 +27,7 @@ THE GLITCHED CAMPUS architecture cleanly decouples presentation and business log
 |                       /api/stage1-5, /api/admin             |
 |  [ Domain Logic ] <-- Score calculation, Attempt tracking,  |
 |                       Hint deduction, Continuity gate       |
-|  [ Store Layer ]  <-- IStore interface -> MemoryStore       |
+|  [ Store Layer ]  <-- IStore (PersistentFileStore / Supabase) |
 +-------------------------------------------------------------+
 ```
 
@@ -72,7 +72,12 @@ export interface IStore {
 }
 ```
 
-The current implementation `MemoryStore` holds collections in memory Maps and arrays. In the future, a persistent database adapter (e.g. PostgreSQL with Prisma or MongoDB) can be plugged in simply by implementing `IStore` without modifying route controllers.
+The platform provides three modular implementations of `IStore`:
+- **`PersistentFileStore`**: Default production-ready persistence engine storing data as atomic JSON records under `backend/storage/data`. Ensures tournament state and audit logs survive server restarts without requiring external database infrastructure.
+- **`SupabaseStore`**: Enterprise PostgreSQL integration via Supabase, automatically activated when valid `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` credentials are provided in the environment.
+- **`MemoryStore`**: Lightweight in-memory storage holding collections in volatile Maps and arrays for development and testing.
+
+Automated unit and integration test suites run against an isolated test directory (`backend/storage/test_data`) or in-memory state to guarantee zero pollution of live tournament records or production databases.
 
 ---
 
@@ -87,3 +92,6 @@ The current implementation `MemoryStore` holds collections in memory Maps and ar
    - `QuizQuestion.correctOptionId` is explicitly stripped before returning questions to participants.
    - Stage 1 quiz submissions compute score on the server, but the participant response only returns receipt confirmation.
    - Stage 2 submissions return only `{ isCorrect, attemptsRemaining, isLockedOut, message }` without leaking overall marks.
+4. **Stage 3 Dataset Isolation & Path Traversal Shielding**:
+   - Participants may download only the specific forensic dataset selected by their team; unselected downloads return `403 Forbidden` (`DATASET_ACCESS_UNAUTHORIZED`).
+   - Dataset path resolution enforces strict filename validation (rejecting traversal markers `..`, `/`, and `\`), lexical and canonical realpath containment against `backend/data/datasets`, and regular file checks. Missing files return `404 Not Found` without creating placeholder files.

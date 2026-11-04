@@ -1,0 +1,7 @@
+application_id,student_id,student_name,branch,scholarship_scheme,annual_family_income_inr,cgpa,category,disability_status,verification_status,grant_amount_inr,academic_year
+SCH-4001,STU-003,Rohan Verma,Electronics,Merit-Cum-Means State Grant,240000,6.8,OBC,NO,APPROVED,45000,2026-2027
+SCH-4002,STU-006,Kavita Iyer,Civil,National Women in Tech Fellowship,180000,6.2,GENERAL,NO,UNDER_REVIEW,50000,2026-2027
+SCH-4003,STU-009,Karan Malhotra,Electronics,Post-Matric Scholarship Scheme,150000,7.0,SC,NO,APPROVED,60000,2026-2027
+SCH-4004,STU-011,Alok Tiwari,Civil,Rural Talent Empowerment Fund,120000,7.5,GENERAL,NO,APPROVED,40000,2026-2027
+SCH-4005,STU-013,Sneha Patil,Computer Science,Pragati Scholarship Scheme,200000,6.5,GENERAL,NO,PENDING_DOCUMENTS,50000,2026-2027
+SCH-4006,STU-002,Aditi Rao,Information Tech,Alumni Excellence Endowment,350000,7.4,GENERAL,NO,REJECTED,0,2026-2027

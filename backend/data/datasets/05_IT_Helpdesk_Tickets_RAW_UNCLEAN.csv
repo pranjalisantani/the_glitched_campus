@@ -1,0 +1,7 @@
+ticket_id,requester_id,category,issue_title,priority,status,opened_at,resolved_at,resolution_hours,assigned_technician,resolution_summary
+TCK-901,STU-001,Campus WiFi,RADIUS auth certificate expired,HIGH,CLOSED,2026-10-10 08:30:00,2026-10-10 10:45:00,2.25,Tech_Rajesh,Re-issued 802.1x PEAP client credentials
+TCK-902,STU-003,Lab Workstation,Linux kernel panic in Lab 4 Machine 12,CRITICAL,CLOSED,2026-10-10 11:15:00,2026-10-10 13:00:00,1.75,Tech_Deepak,Replaced bad DDR4 RAM stick
+TCK-903,STU-005,LMS Portal,Assignment submission upload error 413,MEDIUM,RESOLVED,2026-10-11 14:00:00,2026-10-11 16:30:00,2.5,Tech_Anita,Adjusted nginx client_max_body_size
+TCK-904,STU-006,Hostel LAN,Port flap on Block B Floor 2 switch,HIGH,CLOSED,2026-10-12 09:00:00,2026-10-12 11:30:00,2.5,Tech_Rajesh,Re-terminated RJ45 patch cable
+TCK-905,STU-007,Email Account,Spam filter blocking legitimate IEEE alerts,LOW,CLOSED,2026-10-13 13:20:00,2026-10-13 15:00:00,1.67,Tech_Anita,Whitelisted noreply@ieee.org domain
+TCK-906,STU-002,VPN Gateway,Split-tunneling route table dropped,HIGH,IN_PROGRESS,2026-10-14 16:00:00,,,Tech_Deepak,Investigating OpenVPN push route directive

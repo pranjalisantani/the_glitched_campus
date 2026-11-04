@@ -1,4 +1,4 @@
-﻿import { StageConfig, QuizQuestion, DecodeChallenge, DatasetMetadata, ProblemStatement } from '../types';
+import { StageConfig, QuizQuestion, DecodeChallenge, DatasetMetadata, ProblemStatement } from '../types';
 
 export const INITIAL_STAGES: StageConfig[] = [
   {
@@ -17,9 +17,9 @@ export const INITIAL_STAGES: StageConfig[] = [
     order: 2,
     status: 'LOCKED',
     description: 'Cryptographic payload analysis and encoding challenges. Maximum 3 attempts per challenge.',
-    maxScore: 10,
+    maxScore: 50,
     isScoringProvisional: true,
-    scoringRuleNotes: 'Provisional rule: 10 max stage marks. Each hint used deducts 2 marks (never below 0). Maximum 3 attempts per challenge.'
+    scoringRuleNotes: 'Provisional rule: 50 max stage marks. Each hint used deducts 2 marks (never below 0). Maximum 3 attempts per challenge.'
   },
   {
     id: 'stage3',

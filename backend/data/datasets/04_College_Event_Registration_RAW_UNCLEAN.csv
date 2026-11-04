@@ -1,0 +1,9 @@
+reg_id,student_id,student_name,event_name,event_category,team_name,team_size,payment_status,fee_inr,attendance_status,registered_at
+EV-1001,STU-001,Aarav Sharma,HackNexus 2026,Hackathon,CyberSentinels,4,PAID,500,CHECKED_IN,2026-10-01 10:24:00
+EV-1002,STU-004,Priya Nair,HackNexus 2026,Hackathon,CyberSentinels,4,PAID,500,CHECKED_IN,2026-10-01 10:25:12
+EV-1003,STU-007,Siddharth Das,AlgoWar Competitive Coding,Coding,AlgoKings,1,PAID,200,CHECKED_IN,2026-10-02 14:15:00
+EV-1004,STU-003,Rohan Verma,RoboWars Arena,Robotics,SparkPlug,3,PENDING,600,NO_SHOW,2026-10-03 09:30:00
+EV-1005,STU-005,Vikram Singh,RoboWars Arena,Robotics,SparkPlug,3,PAID,600,CHECKED_IN,2026-10-03 11:00:00
+EV-1006,STU-008,Ananya Gupta,DesignSprint UXathon,UI/UX,PixelCrafters,2,PAID,300,CHECKED_IN,2026-10-04 16:45:00
+EV-1007,STU-010,Meera Joshi,HackNexus 2026,Hackathon,GlitchHunters,4,PAID,500,CHECKED_IN,2026-10-05 12:20:00
+EV-1008,STU-002,Aditi Rao,CyberForensics CaptureTheFlag,CTF,ZeroByte,2,PAID,400,CHECKED_IN,2026-10-05 18:00:00

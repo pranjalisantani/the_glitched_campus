@@ -6,6 +6,9 @@ process.env.JWT_SECRET = 'test_suite_cryptographically_secure_random_jwt_secret_
 import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert';
 import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
 import app, { seedDefaultAdmin } from '../index';
 import { getJwtSecret } from '../config/env';
 import { store } from '../store';
@@ -495,6 +498,127 @@ describe('THE GLITCHED CAMPUS // Comprehensive & Security Test Suite', () => {
       token: teamBToken
     });
     assert.strictEqual(dlInvalid.status, 403); // Participant blocked because not selected
+
+    // 9.9: Unselected live competition dataset (isDemonstration: false) download is rejected
+    const uniqueTestSuffix = crypto.randomBytes(6).toString('hex');
+    const testLiveFilename = `test_live_forensic_${uniqueTestSuffix}.csv`;
+    const testMissingFilename = `test_missing_telemetry_${uniqueTestSuffix}.csv`;
+
+    const liveFilePath = path.resolve(__dirname, `../../data/datasets/${testLiveFilename}`);
+    const missingFilePath = path.resolve(__dirname, `../../data/datasets/${testMissingFilename}`);
+
+    // Verify neither test file exists beforehand without pre-deleting anything
+    assert.strictEqual(fs.existsSync(liveFilePath), false, 'Unique test live file must not exist before test');
+    assert.strictEqual(fs.existsSync(missingFilePath), false, 'Unique test missing file must not exist before test');
+
+    // Track explicitly created files to only remove what this test successfully creates
+    let createdFileToRemove: string | null = null;
+
+    try {
+      const uploadLiveRes = await apiRequest('/api/admin/stage3/upload', {
+        method: 'POST',
+        token: adminToken,
+        body: {
+          name: 'Live Forensic Network Trace',
+          filename: testLiveFilename,
+          content: 'trace_id,timestamp,ip_source,payload_hash\nTRC-101,2026-11-04T12:00:00Z,10.0.0.5,e3b0c442\n'
+        }
+      });
+      assert.strictEqual(uploadLiveRes.status, 201);
+      if (fs.existsSync(liveFilePath)) {
+        createdFileToRemove = liveFilePath;
+      }
+      const liveDsId = uploadLiveRes.data.dataset.id;
+      assert.strictEqual(uploadLiveRes.data.dataset.isDemonstration, false);
+
+      // Team B (has selected 'ds1') attempts to download unselected live dataset -> 403 DATASET_ACCESS_UNAUTHORIZED
+      const dlUnselectedLive = await apiRequest(`/api/stage3/download/${liveDsId}`, {
+        token: teamBToken
+      });
+      assert.strictEqual(dlUnselectedLive.status, 403);
+      assert.strictEqual(dlUnselectedLive.data.code, 'DATASET_ACCESS_UNAUTHORIZED');
+
+      // 9.10: Register Team C to select and download the live dataset
+      const regTeamC = await apiRequest('/api/auth/register', {
+        method: 'POST',
+        body: {
+          teamName: `CyberTitans_${uniqueTestSuffix}`,
+          email: `titans_${uniqueTestSuffix}@nexus.edu`,
+          password: 'Password123!',
+          members: ['Arthur Curry', 'Barry Allen']
+        }
+      });
+      assert.strictEqual(regTeamC.status, 201);
+      const teamCToken = regTeamC.data.token;
+
+      // Team C selects live dataset
+      const teamCSel = await apiRequest('/api/stage3/select', {
+        method: 'POST',
+        token: teamCToken,
+        body: { datasetId: liveDsId }
+      });
+      assert.strictEqual(teamCSel.status, 201);
+
+      // Team C downloads its selected live dataset -> 200 OK
+      const dlTeamCSuccess = await apiRequest(`/api/stage3/download/${liveDsId}`, {
+        token: teamCToken
+      });
+      assert.strictEqual(dlTeamCSuccess.status, 200);
+      assert.ok(dlTeamCSuccess.raw.includes('TRC-101'));
+
+      // 9.11: Missing dataset file returns 404 without silent auto-provisioning
+      const missingMetadataRes = await apiRequest('/api/admin/stage3/datasets', {
+        method: 'POST',
+        token: adminToken,
+        body: {
+          name: 'Missing Dataset Record',
+          filename: testMissingFilename,
+          format: 'CSV',
+          filesize: '10 KB',
+          recordCount: 50
+        }
+      });
+      assert.strictEqual(missingMetadataRes.status, 201);
+      const missingDsId = missingMetadataRes.data.id;
+
+      // Register Team D and select missing dataset
+      const regTeamD = await apiRequest('/api/auth/register', {
+        method: 'POST',
+        body: {
+          teamName: `DeltaSquad_${uniqueTestSuffix}`,
+          email: `delta_${uniqueTestSuffix}@nexus.edu`,
+          password: 'Password123!',
+          members: ['Victor Stone']
+        }
+      });
+      assert.strictEqual(regTeamD.status, 201);
+      const teamDToken = regTeamD.data.token;
+
+      await apiRequest('/api/stage3/select', {
+        method: 'POST',
+        token: teamDToken,
+        body: { datasetId: missingDsId }
+      });
+
+      assert.strictEqual(fs.existsSync(missingFilePath), false, 'File must not exist prior to download request');
+
+      // Attempt download of missing dataset -> must return 404
+      const dlMissingRes = await apiRequest(`/api/stage3/download/${missingDsId}`, {
+        token: teamDToken
+      });
+      assert.strictEqual(dlMissingRes.status, 404);
+      assert.strictEqual(dlMissingRes.data.error, 'Dataset file is not available on the server.');
+
+      // Confirm auto-provisioning did NOT create the file
+      assert.strictEqual(fs.existsSync(missingFilePath), false, 'Auto-provisioning must not create dummy file on 404');
+    } finally {
+      // Clean up ONLY the file created during this test run
+      if (createdFileToRemove && fs.existsSync(createdFileToRemove)) {
+        try {
+          fs.unlinkSync(createdFileToRemove);
+        } catch {}
+      }
+    }
   });
 
   test('10. Filesystem Security, Extension Allowlist & Traversal Shielding', async () => {

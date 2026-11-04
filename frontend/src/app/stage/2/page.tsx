@@ -305,7 +305,7 @@ export default function Stage2Page() {
 
   const handleRequestHint = async (ch: DecodeChallengeParticipant) => {
     if (ch.hintRevealed || ch.isSolved || ch.isLockedOut || isFrozen) return;
-    if (!confirm('⚠️ CONFIRM HINT REQUEST (-2 MARKS)\n\nRequesting a decrypted hint will deduct 2 marks from your Stage 2 score (stage cap: 10 marks, clamped at 0).\n\nThis 2-mark deduction cannot be undone once revealed.\n\nDo you wish to continue and decrypt the hint?')) {
+    if (!confirm('⚠️ CONFIRM HINT REQUEST (-2 MARKS)\n\nRequesting a decrypted hint will deduct 2 marks from your Stage 2 score (stage cap: 50 marks, clamped at 0).\n\nThis 2-mark deduction cannot be undone once revealed.\n\nDo you wish to continue and decrypt the hint?')) {
       return;
     }
 
@@ -494,7 +494,7 @@ export default function Stage2Page() {
   }
 
   const hintsUsedCount = challenges.filter(c => Boolean(c.hintRevealed)).length;
-  const totalDeductionMarks = Math.min(10, hintsUsedCount * 2);
+  const totalDeductionMarks = Math.min(50, hintsUsedCount * 2);
   const solvedCount = challenges.filter(c => c.isSolved).length;
 
   return (
@@ -617,7 +617,7 @@ export default function Stage2Page() {
               <div className="p-3.5 rounded-xl bg-[rgba(5,6,8,0.7)] border border-[rgba(255,255,255,0.08)] text-left font-mono min-w-[125px] shadow-sm">
                 <span className="text-[10px] text-[var(--text-dim)] uppercase tracking-wider block">Score Cap</span>
                 <div className="text-base font-bold text-white mt-0.5">
-                  {Math.max(0, 10 - totalDeductionMarks)} <span className="text-[10px] text-[var(--text-dim)]">/ 10 pts</span>
+                  {Math.max(0, 50 - totalDeductionMarks)} <span className="text-[10px] text-[var(--text-dim)]">/ 50 pts</span>
                 </div>
                 <span className="text-[10px] text-[#00ffa3] block font-semibold">
                   {solvedCount}/{challenges.length} Solved

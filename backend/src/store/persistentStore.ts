@@ -537,7 +537,7 @@ export class PersistentFileStore implements IStore {
         challengeStates: {},
         hintsUsedCount: 0,
         deductionMarks: 0,
-        provisionalScore: 10,
+        provisionalScore: 50,
         lastActivityAt: new Date().toISOString()
       };
     }
@@ -557,8 +557,8 @@ export class PersistentFileStore implements IStore {
       state.hintUsedAt = new Date().toISOString();
       progress.hintsUsedCount += 1;
       const deductionPerHint = challenge.hintDeduction || 2;
-      progress.deductionMarks = Math.min(10, progress.hintsUsedCount * deductionPerHint);
-      progress.provisionalScore = Math.max(0, 10 - progress.deductionMarks);
+      progress.deductionMarks = Math.min(50, progress.hintsUsedCount * deductionPerHint);
+      progress.provisionalScore = Math.max(0, 50 - progress.deductionMarks);
       progress.lastActivityAt = new Date().toISOString();
       this.stage2Progress.set(teamId, progress);
       this.saveCollectionSync('stage2_progress.json', Array.from(this.stage2Progress.values()));
@@ -588,7 +588,7 @@ export class PersistentFileStore implements IStore {
         challengeStates: {},
         hintsUsedCount: 0,
         deductionMarks: 0,
-        provisionalScore: 10,
+        provisionalScore: 50,
         lastActivityAt: new Date().toISOString()
       };
     }
@@ -692,7 +692,7 @@ export class PersistentFileStore implements IStore {
         challengeStates: {},
         hintsUsedCount: 0,
         deductionMarks: 0,
-        provisionalScore: 10,
+        provisionalScore: 50,
         lastActivityAt: new Date().toISOString()
       };
     }

@@ -1,0 +1,7 @@
+asset_id,lab_id,lab_name,equipment_name,model_number,serial_number,purchase_date,last_service_date,status,operational_condition,custodian
+EQ-7001,LAB_CS1,Network Security Lab,Cisco Catalyst 2960 Switch,WS-C2960X-24TS-L,FCW2145A0Z1,2023-06-15,2026-08-10,ACTIVE,OPERATIONAL,Prof_Kulkarni
+EQ-7002,LAB_CS1,Network Security Lab,Palo Alto PA-220 Firewall,PAN-PA-220,012801045922,2024-01-20,2026-09-05,ACTIVE,OPERATIONAL,Prof_Kulkarni
+EQ-7003,LAB_EC2,Embedded Systems Lab,Keysight DSOX1204G Oscilloscope,DSOX1204G,MY59102431,2022-11-10,2026-07-15,ACTIVE,OPERATIONAL,Dr_Rao
+EQ-7004,LAB_EC2,Embedded Systems Lab,Rigol Function Generator,DG1022Z,DG1ZA2134012,2023-03-12,2026-02-18,MAINTENANCE,NEEDS_CALIBRATION,Dr_Rao
+EQ-7005,LAB_CS2,High Performance Computing Lab,Dell PowerEdge R750 Server,R750-2U,4J8K9X2,2024-05-18,2026-09-20,ACTIVE,OPERATIONAL,Prof_Deshmukh
+EQ-7006,LAB_ME1,Robotics & Automation Lab,Universal Robots UR5e Robotic Arm,UR5e-2023,UR5E994120,2023-08-22,2026-08-30,ACTIVE,OPERATIONAL,Dr_Patel

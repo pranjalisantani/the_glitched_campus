@@ -1,0 +1,7 @@
+request_id,hostel_block,room_number,issue_type,urgency,reported_date,completed_date,status,assigned_worker,notes
+MNT-301,Block A,204,Electrical,HIGH,2026-10-08 09:15:00,2026-10-08 11:00:00,RESOLVED,Electrician_Ramesh,Replaced MCB breaker unit
+MNT-302,Block B,112,Plumbing,CRITICAL,2026-10-08 14:20:00,2026-10-08 16:30:00,RESOLVED,Plumber_Suresh,Fixed mainline connector pipe leak
+MNT-303,Block C,305,Carpentry,LOW,2026-10-09 10:00:00,2026-10-10 12:00:00,RESOLVED,Carpenter_Sunil,Repaired study desk latch and hinge
+MNT-304,Block A,410,Air Conditioning,MEDIUM,2026-10-10 13:00:00,2026-10-11 14:00:00,RESOLVED,HVAC_Manoj,Cleaned condenser coils and refilled gas
+MNT-305,Block B,201,Plumbing,MEDIUM,2026-10-12 11:30:00,,,PENDING,Plumber_Suresh,Awaiting spare valve component
+MNT-306,Block D,108,Electrical,HIGH,2026-10-13 08:45:00,2026-10-13 10:15:00,RESOLVED,Electrician_Ramesh,Repaired ceiling fan regulator

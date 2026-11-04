@@ -129,31 +129,39 @@ export default function Stage3Page() {
     }
   };
 
-  const handleDownload = (datasetId: string) => {
-    const token = getAuthToken();
-    fetch(`${getApiBaseUrl()}/stage3/download/${datasetId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Download failed');
-        return res.blob();
-      })
-      .then(blob => {
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-        const ds = datasets.find(d => d.id === datasetId);
-        a.download = ds ? ds.filename : 'dataset_export';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(downloadUrl);
-      })
-      .catch(err => {
-        alert(err.message || 'Failed to download file.');
+  const handleDownload = async (datasetId: string) => {
+    try {
+      const token = getAuthToken();
+      const res = await fetch(`${getApiBaseUrl()}/stage3/download/${datasetId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+      if (!res.ok) {
+        let msg = 'Failed to download dataset.';
+        try {
+          const errData = await res.json();
+          msg = errData.error || msg;
+        } catch {
+          // not json
+        }
+        throw new Error(msg);
+      }
+      const blob = await res.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      const ds = datasets.find(d => d.id === datasetId);
+      a.download = ds ? ds.filename : 'dataset_export';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(downloadUrl);
+      }, 1000);
+    } catch (err: any) {
+      alert(err.message || 'Failed to download file.');
+    }
   };
 
   if (authLoading || loading) {

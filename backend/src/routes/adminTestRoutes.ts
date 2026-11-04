@@ -257,7 +257,7 @@ router.post('/stage2/challenges/:id/hint', requireTestSession, async (req: Admin
       state.hasUsedHint = true;
       state.hintRevealed = challenge.hint;
       session.stage2.hintsUsedCount += 1;
-      session.stage2.deductionMarks = Math.min(10, session.stage2.hintsUsedCount * 2);
+      session.stage2.deductionMarks = Math.min(50, session.stage2.hintsUsedCount * 2);
     }
 
     adminTestStore.updateSession(session);

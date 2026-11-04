@@ -20,13 +20,14 @@
 ### 1.3 Stage 2: Cryptographic Decode & Encode
 - **Payload Inspection**: Obfuscated strings (Base64, ROT13, Hex) displayed in cyber terminal containers.
 - **3-Attempt Limit**: Maximum 3 attempts per challenge. The backend strictly tracks attempt count; after 3 unsuccessful attempts, all subsequent submissions are rejected.
-- **Hint Deductions**: Teams can optionally request a hint for any challenge. Each hint used deducts 2 marks from the stage maximum of 10, clamped at a minimum of 0.
+- **Hint Deductions**: Teams can optionally request a hint for any challenge. Each hint used deducts 2 marks from the stage maximum of 50, clamped at a minimum of 0.
 - **Evaluation Feedback**: Responses return only `{ isCorrect: boolean, attemptsRemaining: number, isLockedOut: boolean, message: string }`. Scores remain hidden.
 
 ### 1.4 Stage 3: Incident Dataset EDA
 - **Dataset Catalog**: Admin manages forensic datasets with metadata (format, size, record count, schema summary).
 - **One-Time Selection**: Teams select exactly one dataset. The selection is locked on the server and prevents re-selection unless an administrator authorizes a reset.
-- **File Download**: Selected datasets can be downloaded directly from the server.
+- **Strict Download Authorization**: Participants may download only the specific dataset selected by their team. Cross-team or unselected download attempts return 403 Forbidden. Admins retain unrestricted download access.
+- **Filesystem Security**: Strict filename validation, path traversal shielding, and regular file validation. Missing dataset files return 404 without automatic placeholder generation.
 - **Workstation Analysis**: No in-browser notebook or code execution editor; teams analyze data offline on their local machines.
 
 ### 1.5 Stage 4: Static UI Prototype
@@ -45,11 +46,19 @@
 - **Management Portals**: CRUD operations for quiz questions, decode challenges, dataset metadata, and problem statements.
 - **Telemetry Matrix**: Centralized view of all registered teams, quiz scores, tab-switch counts, challenge attempts, hint deductions, and dataset/problem selections.
 - **Authorized Resets**: Dedicated endpoints to reset Stage 3 dataset or Stage 4 problem selections if sanctioned by judges.
+- **Global Competition Freeze**: Emergency freeze mechanism instantly blocks participant mutations platform-wide while preserving live view access.
+- **Role-Based Access Control (RBAC)**: Distinguishes Primary Administrators from Event Admins with granular permissions (`manage_teams`, `manage_stage1`, `manage_stage2`, `manage_stage3`, `manage_stage4`, `manage_submissions`, `view_audit_logs`).
+- **Admin Test Mode**: Isolated sandbox session enabling administrators to verify challenge stages without affecting participant scores or tournament records.
+- **Audit Logging**: Comprehensive, timestamped audit log capturing administrative actions (stage status changes, score adjustments, question/challenge updates).
 
 ---
 
-## 2. Non-Functional Requirements & Constraints
+## 2. Non-Functional Requirements & Architecture
 
-- **In-Memory Store**: All data resides in an in-memory modular store for local development. Data resets on server restart.
-- **Zero External Cloud Dependencies**: No Supabase or external hosted databases are connected.
+- **Modular Storage Architecture (`IStore`)**:
+  - **`PersistentFileStore`**: Default atomic JSON persistence written to `backend/storage/data`, ensuring data survives server restarts.
+  - **`SupabaseStore`**: Cloud PostgreSQL integration via Supabase, activated when `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are configured.
+  - **`MemoryStore`**: Ephemeral in-memory implementation for lightweight runs.
+  - **Test Isolation**: Automated unit tests execute strictly against isolated test storage (`backend/storage/test_data`) to prevent production data pollution.
+- **Authentication & Threat Mitigation**: Passwords hashed server-side with `bcryptjs` (10 salt rounds), signed JWT tokens, atomic quiz submission locking, attempt limits, and browser supervision.
 - **Design System**: Dark cyber-forensics aesthetic utilizing custom CSS properties, high contrast badges, accessible form labels, and responsive layout.

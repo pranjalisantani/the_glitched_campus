@@ -1,0 +1,9 @@
+order_id,student_id,counter_id,item_name,category,unit_price_inr,quantity,total_price_inr,payment_method,order_timestamp
+ORD-8001,STU-001,Counter_1,Veg South Indian Thali,Lunch,80,1,80,UPI_QR,2026-10-14 13:05:12
+ORD-8002,STU-002,Counter_2,Cold Brew Coffee,Beverage,45,2,90,CAMPUS_CARD,2026-10-14 13:06:40
+ORD-8003,STU-004,Counter_1,Paneer Butter Masala Combo,Lunch,110,1,110,UPI_QR,2026-10-14 13:08:15
+ORD-8004,STU-007,Counter_3,Samosa Chaat Plate,Snacks,35,2,70,CASH,2026-10-14 13:10:00
+ORD-8005,STU-008,Counter_2,Fresh Orange Juice,Beverage,40,1,40,CAMPUS_CARD,2026-10-14 13:12:30
+ORD-8006,STU-010,Counter_1,Egg Fried Rice Bowl,Lunch,90,1,90,UPI_QR,2026-10-14 13:15:22
+ORD-8007,STU-003,Counter_3,Masala Dosa,Snacks,50,1,50,UPI_QR,2026-10-14 13:18:05
+ORD-8008,STU-005,Counter_2,Chocolate Frappe,Beverage,60,1,60,UPI_QR,2026-10-14 13:20:44

@@ -1,0 +1,8 @@
+session_id,student_id,course_code,course_name,platform,watch_duration_minutes,quizzes_attempted,average_quiz_score,completion_percentage,device_type,last_activity_timestamp
+ONL-6001,STU-001,CS-CYB-301,Advanced Network Penetration Testing,CampusMoodle,145,5,88.4,92.0,Desktop_Chrome,2026-10-18 21:30:15
+ONL-6002,STU-004,CS-CLD-402,Kubernetes Production Architecture,CampusMoodle,180,6,96.0,98.5,Desktop_Linux,2026-10-18 22:15:40
+ONL-6003,STU-002,IT-FOR-205,Digital Forensics & Incident Response,CampusMoodle,95,3,74.5,65.0,Laptop_Windows,2026-10-19 14:20:00
+ONL-6004,STU-007,CS-AI-501,Deep Learning with PyTorch,CampusMoodle,120,4,82.0,80.0,Laptop_Mac,2026-10-19 18:45:10
+ONL-6005,STU-003,EC-EMB-104,ARM Cortex-M Embedded C,CampusMoodle,45,2,58.0,40.0,Mobile_Android,2026-10-20 09:10:00
+ONL-6006,STU-008,IT-UX-302,Modern Interaction Design Systems,CampusMoodle,110,4,89.5,85.0,Laptop_Windows,2026-10-20 16:30:25
+ONL-6007,STU-010,CS-SEC-404,Cloud Infrastructure Vulnerability Scanning,CampusMoodle,135,5,85.0,88.0,Desktop_Chrome,2026-10-20 20:05:00

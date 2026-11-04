@@ -497,7 +497,7 @@ export const StageControlsTab: React.FC<Props> = ({
                 <label className="block text-xs font-mono text-gray-300 mb-1">Scoring Rule Notes</label>
                 <textarea
                   rows={2}
-                  placeholder="e.g. 10 marks total minus 2 marks per hint used."
+                  placeholder="e.g. 50 marks total minus 2 marks per hint used."
                   value={editNotes}
                   onChange={e => setEditNotes(e.target.value)}
                   className="w-full px-3 py-2 text-xs font-mono bg-black/50 border border-white/20 rounded text-white focus:border-[var(--cyan-primary)] outline-none"

@@ -13,9 +13,10 @@ Ensure your development environment meets the following specifications:
 
 ## 2. Workspace Setup
 
-### 2.1 Clone / Access Directory
+### 2.1 Clone & Navigate to Repository
 ```bash
-cd C:\Users\pranjali\the-glitched-campus
+git clone <repository-url>
+cd the-glitched-campus
 ```
 
 ### 2.2 Install Dependencies
@@ -29,6 +30,12 @@ npm install --prefix frontend
 
 # Root dependencies (concurrently)
 npm install
+```
+
+### 2.3 Seed Competition Datasets (Stage 3)
+Populate or verify the 10 synthetic collegiate forensic datasets under `backend/data/datasets/` for Stage 3 Exploratory Data Analysis:
+```bash
+npm run seed:datasets
 ```
 
 ---
@@ -52,9 +59,11 @@ cp frontend/.env.example frontend/.env.local
 |---|---|---|
 | `PORT` | `5000` | Port for Express API |
 | `CLIENT_ORIGIN` | `http://localhost:3000` | CORS allowed origin |
-| `JWT_SECRET` | `nexus_super_secret_jwt_key_2026_change_in_production` | JWT signing secret |
-| `ADMIN_EMAIL` | `admin@glitched.campus` | Initial admin account email |
-| `ADMIN_PASSWORD` | `Admin@Nexus2026!` | Initial admin account password |
+| `JWT_SECRET` | `replace_with_a_long_random_secret` | JWT signing secret (min 32 chars; e.g. `openssl rand -hex 32`) |
+| `ADMIN_EMAIL` | `admin@example.local` | Initial administrator account email |
+| `ADMIN_PASSWORD` | `[PLACEHOLDER: Strong password set by operator]` | Initial administrator password (must be strong; never commit) |
+| `SUPABASE_URL` | `https://your-project-ref.supabase.co` | Optional: Supabase project URL for cloud persistence |
+| `SUPABASE_SERVICE_ROLE_KEY` | `[PLACEHOLDER: Service role secret]` | Optional: Supabase service role key |
 
 ### Frontend Variables (`frontend/.env.local`):
 | Variable | Default Value | Description |
@@ -93,7 +102,7 @@ Execute the comprehensive test suite verifying authentication, stage gating, qui
 ```bash
 npm run test:backend
 ```
-Expected output: 8 tests passing with 0 failures.
+Expected output: 49 tests passing with 0 failures across 4 test suites.
 
 ### 5.2 Build Production Bundles
 Verify that both projects compile cleanly for production:
@@ -101,18 +110,21 @@ Verify that both projects compile cleanly for production:
 # Build backend
 npm run build:backend
 
-# Build frontend
+# Build frontend (on Windows with Node 24: clean .next and run Webpack: cd frontend && npx next build --webpack)
 npm run build:frontend
 ```
 
 ---
 
-## 6. Default Demonstration Accounts
+## 6. Account Management & Local Access Guidance
 
-- **Admin Console (`/admin`)**:
-  - Email: `admin@glitched.campus`
-  - Password: `Admin@Nexus2026!`
-- **Sample Participant Team (`/login`)**:
-  - Email: `sentinels@nexus.edu`
-  - Password: `Password123!`
-  - Quick-fill buttons are provided on the login page for convenience.
+- **Administrator Portal (`/admin`)**:
+  - Administrator access requires the credentials defined in your local `backend/.env` file (`ADMIN_EMAIL` and `ADMIN_PASSWORD`).
+  - Maintain strong, confidential passwords; do not reuse default credentials in production environments.
+  - For local JSON storage password resets, execute the verified interactive recovery utility:
+    ```bash
+    npx tsx backend/src/scripts/resetAdminPassword.ts
+    ```
+- **Participant Access (`/login` / `/register`)**:
+  - **Registration (`/register`)**: New teams register by providing a unique team name, contact email, secure password (minimum 6 characters), and 1 to 5 team member names.
+  - **Authentication (`/login`)**: Teams log in using either their registered email address or team name along with their password to receive a signed JWT session and access the participant dashboard (`/dashboard`).

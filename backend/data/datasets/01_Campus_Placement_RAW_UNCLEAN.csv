@@ -1,0 +1,16 @@
+student_id,branch,cgpa,internships,coding_score,aptitude_score,projects_count,placement_status,salary_package_lpa,company_name,remarks
+STU-001,Computer Science,8.9,2,88,85,4,Placed,14.5,Nexus Cyber Dynamics,Verified by placement cell
+STU-002,Information Tech,7.4,1,72,68,2,Placed,8.2,FinTech Global,
+STU-003,Electronics,6.8,0,55,60,1,Not Placed,0,,Pending remedial aptitude training
+STU-004,Computer Science,9.2,3,95,92,5,Placed,22.0,CloudScale Systems,Gold medalist candidate
+STU-005,Mechanical,7.1,1,60,70,2,Placed,6.5,Apex Robotics,
+STU-006,Civil,6.2,0,45,52,1,Not Placed,0,,Needs resume overhaul
+STU-007,Computer Science,8.5,2,82,78,3,Placed,12.0,DataStream Analytics,
+STU-008,Information Tech,7.9,1,76,80,3,Placed,9.5,InfoCore Tech,
+STU-009,Electronics,7.0,1,64,66,2,Not Placed,0,,Interview round 2 pending
+STU-010,Computer Science,8.1,2,79,84,3,Placed,11.2,CyberShield Defense,
+STU-011,Civil,7.5,1,58,62,2,Placed,5.8,BuildTech Infra,
+STU-012,Mechanical,8.0,2,70,75,3,Placed,7.5,Volt Motors,
+STU-013,Computer Science,6.5,0,52,58,1,Not Placed,0,,Backlog cleared recently
+STU-014,Information Tech,8.7,2,86,88,4,Placed,15.0,Quantum Intelligence,
+STU-015,Electronics,8.3,2,80,82,3,Placed,10.0,SemiCon Core,
