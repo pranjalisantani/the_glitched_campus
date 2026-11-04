@@ -128,3 +128,56 @@ npm run build:frontend
 - **Participant Access (`/login` / `/register`)**:
   - **Registration (`/register`)**: New teams register by providing a unique team name, contact email, secure password (minimum 6 characters), and 1 to 5 team member names.
   - **Authentication (`/login`)**: Teams log in using either their registered email address or team name along with their password to receive a signed JWT session and access the participant dashboard (`/dashboard`).
+---
+
+## 7. Production Deployment Guidance
+
+The platform is designed to deploy across modern hosting infrastructure:
+
+### 7.1 Frontend Deployment (e.g. Vercel)
+- Deploy the `frontend/` directory as a Next.js App Router application.
+- Set the root directory to `frontend` in your hosting platform settings.
+- Configure environment variable:
+  - `NEXT_PUBLIC_API_URL`: The public URL of your deployed backend service (e.g., `https://api.yourdomain.com/api`).
+- Ensure the production build uses standard Next.js build or `npx next build --webpack` if building in a Windows CI runner.
+
+### 7.2 Backend Deployment (Persistent Container / VM)
+- Deploy the `backend/` directory as a Node.js service (e.g. Render, Railway, Fly.io, AWS EC2, or VPS).
+- Configure all required environment variables in your hosting provider's dashboard:
+  - `PORT`, `CLIENT_ORIGIN` (set to your frontend's production domain), `JWT_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
+- **Storage Persistence**:
+  - If using the default `PersistentFileStore`, mount a persistent volume at `backend/storage` to guarantee tournament progress, admin mutations, and audit logs survive container restarts.
+  - If using `SupabaseStore`, configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to persist data directly to your hosted PostgreSQL instance.
+
+---
+
+## 8. Operational Security & Credential Checklist
+
+Before hosting a live tournament, verify the following operational security controls:
+
+1. **Strong JWT Secret**:
+   - In production (`NODE_ENV=production`), the backend enforces that `JWT_SECRET` is defined, at least 32 characters long, and does not match sample defaults.
+   - Generate a strong secret via: `openssl rand -hex 32`.
+2. **Confidential Administrator Credentials**:
+   - Set strong, unpredictable credentials for `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Never commit these values to source control.
+   - If credentials need to be reset in an active deployment using file storage, use the recovery script:
+     ```bash
+     npx tsx backend/src/scripts/resetAdminPassword.ts
+     ```
+3. **CORS Restriction**:
+   - Set `CLIENT_ORIGIN` strictly to the domain where the participant frontend is served. Do not use wildcards (`*`) in production.
+4. **Authoritative State Guard**:
+   - Quiz answer keys, decode challenge solutions, and stage lock rules are evaluated strictly on the server. Clients receive only the minimal state required for the active session.
+
+---
+
+## 9. Comprehensive Troubleshooting Guide
+
+| Issue | Root Cause | Remediation |
+| :--- | :--- | :--- |
+| **`NETWORK_ERROR` / Unable to connect to server** | Backend API service is offline, stopped, or unreachable. | Verify that `npm run dev:backend` (or the production backend service) is active on port 5000 and that `NEXT_PUBLIC_API_URL` in `frontend/.env.local` points to `http://localhost:5000/api`. |
+| **CORS Error on API requests** | `CLIENT_ORIGIN` does not match the frontend origin. | Update `CLIENT_ORIGIN` in `backend/.env` to match the frontend host URL (e.g., `http://localhost:3000` or your deployed production domain). |
+| **Administrator bootstrap skipped** | `ADMIN_EMAIL` or `ADMIN_PASSWORD` not supplied in environment. | Ensure both variables are defined in `backend/.env` if you want an initial administrator account automatically provisioned on server startup. |
+| **Stage 403 Forbidden / Stage Locked** | The requested stage status is currently `LOCKED` or `CLOSED`. | An administrator must log in to the Admin Portal (`/admin`) and open the stage via the Stage Controls tab. |
+| **Competition Frozen modal displayed** | Global competition freeze is engaged platform-wide. | The primary administrator can disengage the freeze toggle from the Admin Console header. |
+| **Frontend build failure on Windows (Turbopack / EPERM)** | Turbopack child-process IPC disconnect on Node 24, or filesystem locking on `.next`. | Delete `frontend/.next` if stale handles exist, then run the verified Webpack build command: `cd frontend && npx next build --webpack`. |

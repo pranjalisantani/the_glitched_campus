@@ -33,7 +33,63 @@ THE GLITCHED CAMPUS architecture cleanly decouples presentation and business log
 
 ---
 
-## 2. Data Access Layer & Extensibility
+## 2. Repository Structure & Module Organization
+
+The codebase is organized as a unified monorepo cleanly separating client-side presentation, server-authoritative API routing, storage adapters, and test suites:
+
+```
+the-glitched-campus/
+|-- frontend/                       # Next.js 16 App Router Client Application
+|   |-- src/
+|   |   |-- app/                    # App Router pages & API routes
+|   |   |   |-- admin/              # Admin dashboard, RBAC tabs, test mode, and admin login
+|   |   |   |-- dashboard/          # Participant command dashboard & live stage status
+|   |   |   |-- stage/              # Interactive challenge stages:
+|   |   |   |   |-- 1/              # Stage 1: Security Assessment Quiz (tab/clipboard supervision)
+|   |   |   |   |-- 2/              # Stage 2: Cryptographic Decode & Encode (attempt limits, hints)
+|   |   |   |   |-- 3/              # Stage 3: Incident Dataset EDA (one-time lock, authorized DL)
+|   |   |   |   |-- 4/              # Stage 4: Static Defensive Prototype (problem selection)
+|   |   |   |   `-- 5/              # Stage 5: Dynamic Security Application (continuity link)
+|   |   |   |-- stages/             # Stage Map visual overview route (and stage aliases)
+|   |   |   |-- login/              # Participant team authentication
+|   |   |   |-- register/           # Participant team onboarding (1 to 5 members)
+|   |   |   `-- globals.css         # Cyber-forensics design system & theme tokens
+|   |   |-- components/             # Reusable UI components (Navbar, StageMap, Modals, Panels)
+|   |   |-- context/                # AuthContext: JWT session management, user clearance & refresh
+|   |   `-- lib/                    # API client with exponential backoff, timeouts, freeze checks
+|   |-- public/                     # Static assets (cyber hero graphics, icons)
+|   `-- package.json
+|-- backend/                        # Express API & Tournament Engine
+|   |-- src/
+|   |   |-- config/                 # Environment validation & fail-safe JWT secret handling
+|   |   |-- data/                   # Initial seeds: stages, questions, challenges, dataset metadata
+|   |   |-- middleware/             # JWT auth, RBAC clearance, stage gates, competition freeze
+|   |   |-- routes/                 # Express route controllers:
+|   |   |   |-- authRoutes.ts       # Registration, login, team profile
+|   |   |   |-- stageRoutes.ts      # Stage 1-5 submission, attempt, hint, download endpoints
+|   |   |   |-- adminRoutes.ts      # Administrative CRUD, team matrix, audit logs, overrides
+|   |   |   `-- adminTestRoutes.ts  # Admin Test Mode isolated sandbox endpoints
+|   |   |-- store/                  # IStore interface, PersistentFileStore, SupabaseStore, MemoryStore
+|   |   |-- test/                   # 49 automated integration, security, RBAC & persistence tests
+|   |   |-- types/                  # Unified domain interfaces, DTOs, and RBAC permission models
+|   |   |-- utils/                  # Dataset storage security, lexical & canonical path containment
+|   |   |-- scripts/                # resetAdminPassword.ts, seedDatasetFiles.ts
+|   |   `-- index.ts                # Application bootstrap, CORS, router mounting & graceful shutdown
+|   |-- storage/
+|   |   |-- data/                   # Persistent runtime state (atomic JSON files: teams, stages, progress)
+|   |   `-- test_data/              # Isolated test directory (auto-purged during test runs)
+|   |-- data/datasets/              # Forensic sample & competition datasets (CSV/JSON)
+|   `-- package.json
+|-- .env.example                    # Root example environment configuration
+|-- ARCHITECTURE.md                 # System architecture and data flow documentation
+|-- REQUIREMENTS.md                 # Full functional and non-functional specifications
+|-- SETUP.md                        # Detailed local setup, deployment, and troubleshooting guide
+`-- package.json                    # Workspace orchestration scripts (concurrent dev, test, build)
+```
+
+---
+
+## 3. Data Access Layer & Extensibility
 
 The data layer is abstracted behind the TypeScript interface `IStore`:
 
@@ -81,7 +137,7 @@ Automated unit and integration test suites run against an isolated test director
 
 ---
 
-## 3. Security & Access Boundaries
+## 4. Security & Access Boundaries
 
 1. **Password Encryption**: All passwords hashed using `bcryptjs` with 10 salt rounds prior to storage.
 2. **Authorization Guards**:
