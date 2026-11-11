@@ -29,24 +29,8 @@ export const Navbar: React.FC = () => {
     <nav className="w-full border-b border-[rgba(255,255,255,0.06)] bg-[rgba(7,9,14,0.92)] backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
 
-        {/* Brand & ACM Identity */}
+        {/* Project Brand */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Official ACM Chapter Logo (JIT ACM) */}
-          <div
-            className="flex items-center shrink-0"
-            title="Official JIT ACM Student Chapter"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/acm-logo.png"
-              alt="JIT ACM Official Logo"
-              className="h-8 w-8 sm:h-9 sm:w-9 object-contain rounded transition-transform hover:scale-105"
-            />
-          </div>
-
-          <span className="text-[var(--text-dim)] font-mono text-xs hidden sm:inline" aria-hidden="true">|</span>
-
-          {/* Project Brand */}
           <Link href="/" className="flex items-center gap-2.5 group" aria-label="The Glitched Campus Home">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[rgba(0,245,255,0.15)] to-[rgba(168,85,247,0.2)] border border-[rgba(0,245,255,0.35)] flex items-center justify-center transition-all group-hover:border-[var(--cyan-primary)] group-hover:shadow-[0_0_15px_rgba(0,245,255,0.35)] shadow-[0_0_10px_rgba(0,245,255,0.15)] shrink-0">
               <svg
